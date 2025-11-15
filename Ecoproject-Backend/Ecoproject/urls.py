@@ -17,13 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include  
-from users.views import RegisterView, LoginView, ProfileView
+from users.views import  LoginView, ProfileView, RegisterSellerView, RegisterUserView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/', include('products.urls')),  # prefix /api/ for all products urls -------
-    path('api/register/', RegisterView.as_view()),
+    path('api/register/', RegisterUserView.as_view()),
     path('api/login/', LoginView.as_view()),
-    path('api/profile/', ProfileView.as_view())
+    path('api/profile/', ProfileView.as_view()),
+    # seller routes
+    path('api/seller/register/', RegisterSellerView.as_view()),
 ]

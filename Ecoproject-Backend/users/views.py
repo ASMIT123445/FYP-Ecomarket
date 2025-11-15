@@ -8,18 +8,30 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 
 
-class RegisterView(APIView):
+class RegisterSellerView(APIView):
     def post(self, request):
-        data = request.data
-        serializer = RegisterSerializer(data = data)
+        data = request.data.copy()
+        data['role'] = 'seller'
+        serializer = RegisterSerializer(data=data)
+
         if serializer.is_valid():
-            user = serializer.save()
-            return Response({
-                "message" : "User created successfully",
-                "status": True
-            }, status = status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            return Response({"message": "Seller registered successfully"}, status=201)
+
+        return Response(serializer.errors, status=400)
+
+class RegisterUserView(APIView):
+    def post(self, request):
+        data = request.data.copy()
+        data['role'] = 'customer'
+        serializer = RegisterSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User registered successfully"}, status=201)
+
+        return Response(serializer.errors, status=400)
+
     
 class LoginView(APIView):
     def post(self, request):
